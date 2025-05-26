@@ -1,4 +1,4 @@
-document.getElementById('form').addEventListener('submit', function(e) {
+document.getElementById('form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const errorBox = document.getElementById('error');
   errorBox.style.display = 'none';
@@ -9,7 +9,8 @@ document.getElementById('form').addEventListener('submit', function(e) {
   const ageMax = parseInt(document.getElementById('ageMax').value);
   const sampleSize = parseInt(document.getElementById('sampleSize').value);
   const answerValues = document.getElementById('answers').value
-    .split(/[,\n]/)
+    .split(/[,
+]/)
     .map(x => parseInt(x.trim()))
     .filter(x => !isNaN(x));
 
@@ -26,12 +27,28 @@ document.getElementById('form').addEventListener('submit', function(e) {
     return;
   }
 
-  let totalPop = 0;
-  for (let age = ageMin; age <= ageMax; age++) {
-    const base = 300000 + (age % 5) * 10000;
-    totalPop += gender === 'male' ? base : gender === 'female' ? base - 10000 : base * 2;
+  const res = await fetch('data/population_data.json');
+  const popData = await res.json();
+
+  function getWeightedPopulation(min, max, gender) {
+    let total = 0;
+    for (let groupStart = 15; groupStart <= 95; groupStart += 5) {
+      const groupEnd = groupStart + 4;
+      const overlapStart = Math.max(min, groupStart);
+      const overlapEnd = Math.min(max, groupEnd);
+      const overlapYears = Math.max(0, overlapEnd - overlapStart + 1);
+      if (overlapYears > 0) {
+        const key = `${groupStart}-${groupEnd}`;
+        const group = popData[key];
+        if (!group) continue;
+        const base = gender === 'male' ? group.male : gender === 'female' ? group.female : group.male + group.female;
+        total += base * (overlapYears / 5);
+      }
+    }
+    return Math.round(total * 1000); // 千人単位 → 人
   }
 
+  const totalPop = getWeightedPopulation(ageMin, ageMax, gender);
   const displayAsMan = document.getElementById('unit').checked;
   const results = answerValues.map(n => {
     const rate = n / sampleSize;
@@ -54,13 +71,13 @@ function renderResults(results, totalPop, asMan) {
   const table = document.getElementById('results-table');
   table.innerHTML = `
     <table class="w-full text-sm">
-      <thead><tr><th class="text-left font-mono">回答数</th><th class="text-left font-mono">回答率</th><th class="text-left font-mono">推定人数</th></tr></thead>
+      <thead><tr><th>回答数</th><th>回答率</th><th>推定人数</th></tr></thead>
       <tbody>
         ${results.map(r => `
           <tr>
-            <td class="text-left font-mono">${r.sample}</td>
-            <td class="text-left font-mono">${(r.rate * 100).toFixed(2)}%</td>
-            <td class="text-left font-mono">${asMan ? (r.estimate / 10000).toFixed(2) + '万人' : Math.round(r.estimate).toLocaleString() + '人'}</td>
+            <td>${r.sample}</td>
+            <td>${(r.rate * 100).toFixed(2)}%</td>
+            <td>${asMan ? (r.estimate / 10000).toFixed(2) + '万人' : Math.round(r.estimate).toLocaleString() + '人'}</td>
           </tr>
         `).join('')}
       </tbody>
