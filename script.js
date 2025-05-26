@@ -26,7 +26,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
     return;
   }
 
-  const res = await fetch('data/population_data.json');
+  const res = await fetch('population_data.json');
   const popData = await res.json();
 
   function getWeightedPopulation(min, max, gender) {
