@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>人口ボリューム計算ツール</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 via-white to-purple-100 min-h-screen text-gray-800">
+  <div class="max-w-3xl mx-auto py-8 px-4">
+    <h1 class="text-2xl font-bold text-center text-green-700 mb-6">人口ボリューム計算ツール</h1>
+
+    <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+      <h2 class="text-xl font-semibold text-green-600 mb-4">計算設定</h2>
+      <form id="form" class="space-y-4">
+        <div>
+          <label class="block font-medium mb-1">性別</label>
+          <select id="gender" class="w-full border border-gray-300 rounded px-3 py-2">
+            <option value="both">両方</option>
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+          </select>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <label class="block font-medium mb-1">年齢下限</label>
+            <input type="number" id="ageMin" value="20" class="w-full border border-gray-300 rounded px-3 py-2" />
+          </div>
+          <div class="flex-1">
+            <label class="block font-medium mb-1">年齢上限</label>
+            <input type="number" id="ageMax" value="59" class="w-full border border-gray-300 rounded px-3 py-2" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-medium mb-1">サンプル数</label>
+          <input type="number" id="sampleSize" value="10000" class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <div>
+          <label class="block font-medium mb-1">該当回答数（カンマまたは改行で区切り）</label>
+          <textarea id="answers" rows="3" class="w-full border border-gray-300 rounded px-3 py-2">35,3579,25</textarea>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="unit" class="w-4 h-4" />
+          <label for="unit" class="text-sm">推定人数を万人単位で表示</label>
+        </div>
+        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">計算する</button>
+      </form>
+    </div>
+
+    <div id="results" class="bg-white p-6 rounded-xl shadow-md hidden">
+      <h2 class="text-xl font-semibold text-green-600 mb-4">計算結果</h2>
+      <div id="population-info" class="mb-4 text-sm"></div>
+      <div id="results-table"></div>
+      <canvas id="population-chart" class="mt-4"></canvas>
+      <button onclick="downloadCSV()" class="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">CSV出力</button>
+    </div>
+
+    <script src="script.js"></script>
+  </div>
+</body>
+</html>
