@@ -2,11 +2,12 @@ body {
   font-family: Arial, sans-serif;
   background: #fff;
   padding: 20px;
-  color: #333;
+  color: #1A1A1A;
 }
 h1 {
   font-size: 20px;
   margin-bottom: 1rem;
+  color: #00B900;
 }
 label {
   display: block;
@@ -18,21 +19,18 @@ input, select, textarea {
   margin-top: 4px;
   margin-bottom: 10px;
   box-sizing: border-box;
-}
-input[type="checkbox"] {
-  margin-right: 6px;
-  vertical-align: middle;
+  border: 1px solid #ccc;
 }
 button {
   padding: 10px 15px;
   margin-top: 10px;
-  background-color: #28a745;
+  background-color: #2BA84A;
   color: white;
   border: none;
   cursor: pointer;
 }
 button:hover {
-  background-color: #218838;
+  background-color: #24913F;
 }
 table {
   width: 100%;
@@ -46,4 +44,10 @@ th, td {
 }
 th {
   background-color: #f9f9f9;
+}
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
 }
