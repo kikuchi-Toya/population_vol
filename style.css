@@ -19,6 +19,10 @@ input, select, textarea {
   margin-bottom: 10px;
   box-sizing: border-box;
 }
+input[type="checkbox"] {
+  margin-right: 6px;
+  vertical-align: middle;
+}
 button {
   padding: 10px 15px;
   margin-top: 10px;
