@@ -11,6 +11,7 @@
   <main class="max-w-3xl mx-auto py-8 px-4">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-6">人口ボリューム計算ツール</h1>
     <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+      <div id="error" class="text-red-600 font-semibold mb-4 hidden"></div>
       <form id="form" class="space-y-4">
         <div>
           <label class="block font-medium mb-1">性別</label>
@@ -23,20 +24,20 @@
         <div class="flex gap-4">
           <div class="flex-1">
             <label class="block font-medium mb-1">年齢下限</label>
-            <input type="number" id="ageMin" value="20" class="w-full border border-gray-300 rounded px-3 py-2" />
+            <input type="number" id="ageMin" class="w-full border border-gray-300 rounded px-3 py-2" />
           </div>
           <div class="flex-1">
             <label class="block font-medium mb-1">年齢上限</label>
-            <input type="number" id="ageMax" value="59" class="w-full border border-gray-300 rounded px-3 py-2" />
+            <input type="number" id="ageMax" class="w-full border border-gray-300 rounded px-3 py-2" />
           </div>
         </div>
         <div>
           <label class="block font-medium mb-1">サンプル数</label>
-          <input type="number" id="sampleSize" value="10000" class="w-full border border-gray-300 rounded px-3 py-2" />
+          <input type="number" id="sampleSize" class="w-full border border-gray-300 rounded px-3 py-2" />
         </div>
         <div>
           <label class="block font-medium mb-1">該当回答数（カンマまたは改行で区切り）</label>
-          <textarea id="answers" rows="3" class="w-full border border-gray-300 rounded px-3 py-2">35,3579,25</textarea>
+          <textarea id="answers" rows="3" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
         </div>
         <div class="flex items-center gap-2">
           <input type="checkbox" id="unit" class="w-4 h-4" />
