@@ -1,24 +1,13 @@
 document.getElementById('form').addEventListener('submit', function(e) {
   e.preventDefault();
-  const errorBox = document.getElementById('error');
-  errorBox.classList.add('hidden');
-  errorBox.textContent = '';
-
   const gender = document.getElementById('gender').value;
   const ageMin = parseInt(document.getElementById('ageMin').value);
   const ageMax = parseInt(document.getElementById('ageMax').value);
   const sampleSize = parseInt(document.getElementById('sampleSize').value);
   const answerValues = document.getElementById('answers').value
-    .split(/[,
-]/)
+    .split(/[,\n]/)
     .map(x => parseInt(x.trim()))
     .filter(x => !isNaN(x));
-
-  if (!ageMin || !ageMax || !sampleSize || answerValues.length === 0) {
-    errorBox.textContent = 'すべての項目を入力してください。';
-    errorBox.classList.remove('hidden');
-    return;
-  }
 
   let totalPop = 0;
   for (let age = ageMin; age <= ageMax; age++) {
