@@ -48,13 +48,13 @@ function renderResults(results, totalPop, asMan) {
   const table = document.getElementById('results-table');
   table.innerHTML = `
     <table class="w-full text-sm">
-      <thead><tr><th>回答数</th><th>回答率</th><th>推定人数</th></tr></thead>
+      <thead><tr><th class="text-left font-mono">回答数</th><th class="text-left font-mono">回答率</th><th class="text-left font-mono">推定人数</th></tr></thead>
       <tbody>
         ${results.map(r => `
           <tr>
-            <td>${r.sample}</td>
-            <td>${(r.rate * 100).toFixed(2)}%</td>
-            <td>${asMan ? (r.estimate / 10000).toFixed(2) + '万人' : Math.round(r.estimate).toLocaleString() + '人'}</td>
+            <td class="text-left font-mono">${r.sample}</td>
+            <td class="text-left font-mono">${(r.rate * 100).toFixed(2)}%</td>
+            <td class="text-left font-mono">${asMan ? (r.estimate / 10000).toFixed(2) + '万人' : Math.round(r.estimate).toLocaleString() + '人'}</td>
           </tr>
         `).join('')}
       </tbody>
