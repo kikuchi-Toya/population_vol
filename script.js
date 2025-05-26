@@ -9,8 +9,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
   const ageMax = parseInt(document.getElementById('ageMax').value);
   const sampleSize = parseInt(document.getElementById('sampleSize').value);
   const answerValues = document.getElementById('answers').value
-    .split(/[,
-]/)
+   .split(/[,\n]/)
     .map(x => parseInt(x.trim()))
     .filter(x => !isNaN(x));
 
