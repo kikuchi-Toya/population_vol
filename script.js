@@ -20,74 +20,29 @@ document.getElementById('form').addEventListener('submit', function(e) {
     const rate = n / sampleSize;
     return {
       sample: n,
-      rate,
-      estimate: rate * totalPop
+      rate: (rate * 100).toFixed(2),
+      estimate: displayAsMan
+        ? (rate * totalPop / 10000).toFixed(2) + '万人'
+        : Math.round(rate * totalPop).toLocaleString() + '人'
     };
   });
 
-  renderResults(results, totalPop, displayAsMan);
-  renderChart(results);
-  document.getElementById('results').classList.remove('hidden');
-});
-
-function renderResults(results, totalPop, asMan) {
-  const info = document.getElementById('population-info');
-  info.textContent = `対象人口（推定）: ${totalPop.toLocaleString()}人`;
-
-  const table = document.getElementById('results-table');
-  table.innerHTML = `
-    <table class="w-full text-sm">
+  const tableRows = results.map(r => `<tr><td>${r.sample}</td><td>${r.rate}%</td><td>${r.estimate}</td></tr>`).join('');
+  document.getElementById('results').innerHTML = `
+    <h2>計算結果</h2>
+    <p>対象人口（推定）: ${totalPop.toLocaleString()}人</p>
+    <table>
       <thead><tr><th>回答数</th><th>回答率</th><th>推定人数</th></tr></thead>
-      <tbody>
-        ${results.map(r => `
-          <tr>
-            <td>${r.sample}</td>
-            <td>${(r.rate * 100).toFixed(2)}%</td>
-            <td>${asMan ? (r.estimate / 10000).toFixed(2) + '万人' : Math.round(r.estimate).toLocaleString() + '人'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
+      <tbody>${tableRows}</tbody>
     </table>
+    <button onclick="downloadCSV()">CSV出力</button>
   `;
 
   window.currentCSV = [
-    ["回答数", "回答率(%)", asMan ? "推定人数(万人)" : "推定人数(人)"],
-    ...results.map(r => [
-      r.sample,
-      (r.rate * 100).toFixed(2),
-      asMan ? (r.estimate / 10000).toFixed(2) : Math.round(r.estimate)
-    ])
+    ['回答数', '回答率(%)', displayAsMan ? '推定人数(万人)' : '推定人数(人)'],
+    ...results.map(r => [r.sample, r.rate, r.estimate.replace(/[,人]/g, '')])
   ];
-}
-
-function renderChart(results) {
-  const ctx = document.getElementById("population-chart").getContext("2d");
-  if (window.chart) window.chart.destroy();
-  window.chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: results.map(r => r.sample + '件'),
-      datasets: [{
-        label: '推定人数',
-        data: results.map(r => Math.round(r.estimate)),
-        backgroundColor: 'rgba(34,197,94,0.6)',
-        borderColor: 'rgba(34,197,94,1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: value => value.toLocaleString() + '人'
-          }
-        }
-      }
-    }
-  });
-}
+});
 
 function downloadCSV() {
   if (!window.currentCSV) return;
@@ -96,5 +51,7 @@ function downloadCSV() {
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
   link.download = "population_estimate.csv";
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
 }
