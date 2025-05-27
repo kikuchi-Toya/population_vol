@@ -44,7 +44,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
         total += base * (overlapYears / 5);
       }
     }
-    return Math.round(total * 1000); // 千人単位 → 人
+    return Math.round(total); // 千人単位 → 人
   }
 
   const totalPop = getWeightedPopulation(ageMin, ageMax, gender);
